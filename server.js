@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
 const app = express();
-const PORT = 3000;
+
+const PORT = process.env.PORT || 3000;
 
 const urlDatabase = {};
 
@@ -17,7 +18,9 @@ app.post("/api/shorten", (req, res) => {
   const longUrl = req.body.longUrl;
   const shortCode = generateShortCode();
   urlDatabase[shortCode] = longUrl;
-  res.json({ shortUrl: `${req.protocol}://${req.get("host")}/short/${shortCode}` });
+  res.json({
+    shortUrl: `${req.protocol}://${req.get("host")}/short/${shortCode}`
+  });
 });
 
 app.get("/short/:code", (req, res) => {
@@ -32,5 +35,5 @@ app.get("/short/:code", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
